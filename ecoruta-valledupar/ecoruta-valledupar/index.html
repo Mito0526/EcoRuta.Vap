@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>EcoRuta Valledupar · Recoger solo lo que está lleno</title>
+  <meta name="description" content="Prototipo de monitoreo IoT de contenedores de residuos y rutas de recolección dinámicas para Valledupar.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&display=swap">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/home.css">
+</head>
+<body data-page="home" data-footer="true">
+  <div id="site-header"></div>
+
+  <main>
+    <!-- portada: la idea del proyecto con una demostración -->
+    <section class="hero">
+      <div class="hero__text">
+        <h1>Recoger solo lo que está lleno.</h1>
+        <p class="hero__lead">
+          En Valledupar se recicla cerca del 20&nbsp;% de los residuos. Los camiones recorren rutas fijas
+          y pasan por contenedores casi vacíos mientras otros se desbordan. EcoRuta mide el llenado de
+          cada contenedor y arma la ruta solo con los que ya lo necesitan.
+        </p>
+        <div class="hero__actions">
+          <a class="btn" href="dashboard.html">Abrir el mapa</a>
+          <a class="btn btn--ghost" href="hardware.html">Ver el hardware en 3D</a>
+        </div>
+      </div>
+
+      <!-- demostración: al mover el umbral cambian los contenedores que hay que recoger -->
+      <div class="demo" aria-labelledby="demo-title">
+        <h2 id="demo-title" class="demo__title">Prueba con el umbral</h2>
+        <div id="demo-tanks" class="demo__tanks" role="img" aria-label="Catorce contenedores con distintos niveles de llenado"></div>
+        <div class="demo__control">
+          <label for="demo-threshold">Recoger a partir de</label>
+          <input id="demo-threshold" type="range" min="50" max="100" value="80" step="1">
+          <output id="demo-threshold-out" for="demo-threshold">80 %</output>
+        </div>
+        <p id="demo-summary" class="demo__summary" aria-live="polite"></p>
+      </div>
+    </section>
+
+    <!-- enlaces a las demás páginas -->
+    <section class="section">
+      <h2 class="section__title">Qué hay en el prototipo</h2>
+      <ul class="pages">
+        <li>
+          <a class="pages__link" href="dashboard.html">
+            <strong>Mapa y rutas</strong>
+            <span>53 contenedores en 10 sectores de Valledupar, con color según el nivel de llenado, listado lateral, filtro de críticos y rutas por calles hasta para 3 camiones.</span>
+          </a>
+        </li>
+        <li>
+          <a class="pages__link" href="hardware.html">
+            <strong>Hardware del contenedor</strong>
+            <span>Modelo 3D que se puede girar y separar por piezas: sensor ultrasónico, módulo con radio LoRa, batería, panel solar y antena.</span>
+          </a>
+        </li>
+        <li>
+          <a class="pages__link" href="conductor.html">
+            <strong>Vista del conductor</strong>
+            <span>La ruta del día en pantalla de celular: próxima parada, indicaciones giro a giro y botón para marcar el contenedor como recolectado.</span>
+          </a>
+        </li>
+        <li>
+          <a class="pages__link" href="proyecto.html">
+            <strong>Documentación del proyecto</strong>
+            <span>Problema, objetivos, alcance, historias de usuario cubiertas, estructura del código y límites del prototipo.</span>
+          </a>
+        </li>
+      </ul>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script src="js/config.js"></script>
+  <script src="js/geo.js"></script>
+  <script src="js/layout.js"></script>
+  <script src="js/home.js"></script>
+</body>
+</html>

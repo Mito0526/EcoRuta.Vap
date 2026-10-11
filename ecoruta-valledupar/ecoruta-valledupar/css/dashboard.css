@@ -1,0 +1,483 @@
+/* Página del mapa y las rutas: el mapa ocupa todo el alto y el panel queda a la derecha
+   (en pantallas angostas pasa debajo). Los marcadores .pin los dibujo solo con CSS. */
+
+.app {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - var(--header-h));
+  height: calc(100dvh - var(--header-h));
+  min-height: 560px;
+}
+
+/* barra de control */
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 24px;
+  padding: 10px 16px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+}
+
+.toolbar__group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.toolbar__group--threshold input[type='range'] {
+  width: 150px;
+}
+
+.toolbar__group--threshold output {
+  min-width: 3.4ch;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+
+.toolbar__group--end {
+  margin-left: auto;
+  flex-wrap: wrap;
+}
+
+.chips {
+  display: flex;
+  gap: 6px;
+}
+
+.chip {
+  min-height: 30px;
+  padding: 2px 12px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: #fff;
+  cursor: pointer;
+}
+
+.chip:hover {
+  border-color: var(--ink);
+}
+
+.chip[aria-pressed='true'] {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: #fff;
+}
+
+/* mapa y panel */
+.workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 390px;
+  flex: 1;
+  min-height: 0;
+}
+
+.map-wrap {
+  position: relative;
+  min-height: 0;
+}
+
+#map {
+  position: absolute;
+  inset: 0;
+  background: #dfe5df;
+}
+
+.legend {
+  position: absolute;
+  left: 12px;
+  bottom: 22px;
+  z-index: 500;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  margin: 0;
+  padding: 6px 12px;
+  list-style: none;
+  border-radius: var(--radius-s);
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: var(--shadow-pop);
+  font-size: 0.85rem;
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  border-left: 1px solid var(--line);
+  background: var(--surface);
+}
+
+/* indicadores */
+.kpis {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin: 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.kpis > div {
+  padding: 12px 12px 10px;
+  border-right: 1px solid var(--line);
+}
+
+.kpis > div:last-child {
+  border-right: 0;
+}
+
+.kpis dt {
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+}
+
+.kpis dd {
+  margin: 2px 0 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.45rem;
+  line-height: 1.1;
+}
+
+/* pestañas */
+.tabs {
+  display: flex;
+  border-bottom: 1px solid var(--line);
+}
+
+.tabs button {
+  flex: 1;
+  padding: 10px;
+  border: 0;
+  border-bottom: 3px solid transparent;
+  background: none;
+  cursor: pointer;
+  font-weight: 700;
+  color: var(--ink-soft);
+}
+
+.tabs button[aria-selected='true'] {
+  border-bottom-color: var(--accent);
+  color: var(--ink);
+}
+
+.view {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 12px;
+}
+
+.view[hidden] {
+  display: none;
+}
+
+#search {
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+/* lista de contenedores */
+.clist {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.crow {
+  display: grid;
+  grid-template-columns: 12px minmax(0, 1fr) 90px 44px;
+  gap: 10px;
+  align-items: center;
+  width: 100%;
+  padding: 8px 6px;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  background: none;
+  text-align: left;
+  cursor: pointer;
+}
+
+.crow:hover {
+  background: var(--paper);
+}
+
+.crow__name {
+  display: block;
+  font-weight: 700;
+}
+
+.crow__sector {
+  display: block;
+  font-size: 0.82rem;
+  color: var(--ink-soft);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.crow__bar {
+  height: 8px;
+  border-radius: 4px;
+  background: var(--line);
+  overflow: hidden;
+}
+
+.crow__bar i {
+  display: block;
+  height: 100%;
+  background: var(--bar, var(--ok));
+}
+
+.crow__pct {
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-align: right;
+}
+
+.crow--out {
+  opacity: 0.4;
+}
+
+.clist__none {
+  padding: 16px 6px;
+  color: var(--ink-soft);
+}
+
+/* rutas */
+.empty {
+  padding: 8px 4px;
+  color: var(--ink-soft);
+}
+
+.empty p + p {
+  margin-top: 6px;
+}
+
+.rcards {
+  display: grid;
+  gap: 10px;
+}
+
+.rcard {
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-left: 6px solid var(--c, var(--accent));
+  border-radius: var(--radius-s);
+}
+
+.rcard h3 {
+  font-size: 1.05rem;
+}
+
+.rcard__stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  margin: 6px 0 10px;
+  color: var(--ink-soft);
+  font-size: 0.92rem;
+}
+
+.rcard__stats strong {
+  color: var(--ink);
+}
+
+.rcard__stops {
+  margin: 0 0 10px;
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+}
+
+.rcard__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.savings {
+  margin-top: 14px;
+  padding: 14px;
+  border-radius: var(--radius-s);
+  background: var(--paper);
+}
+
+.savings h3 {
+  font-size: 1.05rem;
+  margin-bottom: 8px;
+}
+
+.savings dl {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 4px 12px;
+  margin: 0;
+}
+
+.savings dt {
+  color: var(--ink-soft);
+}
+
+.savings dd {
+  margin: 0;
+  font-weight: 700;
+  text-align: right;
+}
+
+.savings__note {
+  margin-top: 10px;
+  font-size: 0.82rem;
+  color: var(--ink-soft);
+}
+
+/* marcadores del mapa */
+.pin-wrap {
+  background: none;
+  border: 0;
+}
+
+/* el anillo es un conic-gradient: pinta el color hasta --p por ciento (0 a 100) y el resto queda gris. El círculo blanco de ::before tapa el centro */
+.pin {
+  --c: var(--ok);
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: conic-gradient(var(--c) calc(var(--p) * 1%), #cfd6cf 0);
+  box-shadow: 0 0 0 2px #fff, 0 2px 6px rgba(0, 0, 0, 0.35);
+}
+
+.pin::before {
+  content: '';
+  position: absolute;
+  inset: 5px;
+  border-radius: 50%;
+  background: #fff;
+}
+
+.pin__value {
+  position: relative;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.pin--ok {
+  --c: var(--ok);
+}
+.pin--mid {
+  --c: var(--mid);
+}
+.pin--high {
+  --c: var(--high);
+}
+.pin--crit {
+  --c: var(--crit);
+}
+
+.pin--dim {
+  opacity: 0.35;
+}
+
+/* número de orden de la visita en la ruta */
+.pin__seq {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  display: grid;
+  place-items: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  border-radius: 9px;
+  background: var(--ink);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.depot {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  margin: 2px;
+  border-radius: 6px;
+  background: var(--ink);
+  color: #fff;
+  font-family: var(--font-display);
+  font-weight: 700;
+  box-shadow: 0 0 0 2px #fff, 0 2px 6px rgba(0, 0, 0, 0.35);
+}
+
+.truck {
+  width: 24px;
+  height: 24px;
+  margin: 3px;
+  border-radius: 50%;
+  background: var(--c, var(--accent));
+  border: 3px solid #fff;
+  box-shadow: 0 0 0 3px var(--c, var(--accent)), 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+/* ventana emergente de Leaflet */
+.popup__title {
+  font-size: 1.15rem;
+}
+
+.popup__sector,
+.popup__street,
+.popup__meta {
+  font-size: 0.88rem;
+  color: var(--ink-soft);
+}
+
+.popup__level {
+  margin: 8px 0 2px;
+  font-size: 1.05rem;
+}
+
+.popup__band {
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+}
+
+.popup__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+/* pantallas angostas */
+@media (max-width: 900px) {
+  .app {
+    height: auto;
+    min-height: 0;
+  }
+
+  .workspace {
+    display: block;
+  }
+
+  .map-wrap {
+    height: 62vh;
+    min-height: 360px;
+  }
+
+  .panel {
+    border-left: 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .view {
+    max-height: 70vh;
+  }
+
+  .toolbar__group--end {
+    margin-left: 0;
+  }
+}

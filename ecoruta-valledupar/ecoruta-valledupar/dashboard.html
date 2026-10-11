@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mapa y rutas · EcoRuta Valledupar</title>
+  <meta name="description" content="Mapa de contenedores de Valledupar con nivel de llenado y rutas de recolección por calles.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&display=swap">
+  <!-- Leaflet 1.9.4 para el mapa; dejo la versión fija para que no me cambie nada -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body data-page="dashboard">
+  <div id="site-header"></div>
+
+  <div class="app">
+    <!-- barra de arriba: umbral, filtro, camiones y simulación -->
+    <section class="toolbar" aria-label="Controles del mapa">
+      <div class="toolbar__group toolbar__group--threshold">
+        <label for="threshold">Recoger a partir de</label>
+        <input id="threshold" type="range" min="50" max="100" step="1" value="80">
+        <output id="threshold-out" for="threshold">80 %</output>
+        <div class="chips" role="group" aria-label="Umbrales rápidos">
+          <button type="button" class="chip" data-threshold="80">80 %</button>
+          <button type="button" class="chip" data-threshold="90">90 %</button>
+        </div>
+      </div>
+
+      <label class="switch" for="only-critical">
+        <input id="only-critical" type="checkbox">
+        <span class="switch__track"></span>
+        <span>Solo críticos y crear ruta</span>
+      </label>
+
+      <div class="toolbar__group">
+        <label for="trucks">Camiones</label>
+        <select id="trucks">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+        </select>
+      </div>
+
+      <div class="toolbar__group toolbar__group--end">
+        <button id="btn-sim" type="button" class="btn btn--ghost btn--small" aria-pressed="false">Simular sensores</button>
+        <button id="btn-reset" type="button" class="btn btn--ghost btn--small">Reiniciar datos</button>
+        <span id="routing-badge" class="badge" role="status">Preparando calles…</span>
+      </div>
+    </section>
+
+    <div class="workspace">
+      <div class="map-wrap">
+        <div id="map" role="application" aria-label="Mapa de contenedores de Valledupar"></div>
+        <ul class="legend" aria-label="Leyenda de colores">
+          <li><span class="dot dot--ok"></span> Menos de 50 %</li>
+          <li><span class="dot dot--mid"></span> 50 a 79 %</li>
+          <li><span class="dot dot--high"></span> 80 a 89 %</li>
+          <li><span class="dot dot--crit"></span> 90 % o más</li>
+        </ul>
+      </div>
+
+      <aside class="panel" aria-label="Resumen y listas">
+        <dl class="kpis">
+          <div><dt>Contenedores</dt><dd id="kpi-total">0</dd></div>
+          <div><dt>Críticos</dt><dd id="kpi-crit">0</dd></div>
+          <div><dt>Llenado medio</dt><dd id="kpi-avg">0 %</dd></div>
+          <div><dt>Ahorro de km</dt><dd id="kpi-save">–</dd></div>
+        </dl>
+
+        <div class="tabs" role="tablist" aria-label="Contenido del panel">
+          <button type="button" role="tab" id="tab-list" aria-controls="view-list" aria-selected="true">Contenedores</button>
+          <button type="button" role="tab" id="tab-routes" aria-controls="view-routes" aria-selected="false">Rutas</button>
+        </div>
+
+        <section id="view-list" class="view" role="tabpanel" aria-labelledby="tab-list">
+          <label class="sr-only" for="search">Buscar contenedor o barrio</label>
+          <input id="search" type="search" placeholder="Buscar contenedor o barrio">
+          <ul id="container-list" class="clist"></ul>
+        </section>
+
+        <section id="view-routes" class="view" role="tabpanel" aria-labelledby="tab-routes" hidden>
+          <div id="routes-empty" class="empty">
+            <p><strong>Aún no hay rutas.</strong></p>
+            <p>Active «Solo críticos y crear ruta» y se calculará una ruta con los contenedores que superan el umbral.</p>
+          </div>
+          <div id="route-cards" class="rcards"></div>
+          <div id="savings" class="savings" hidden></div>
+        </section>
+      </aside>
+    </div>
+  </div>
+
+  <!-- el orden de los scripts importa: cada uno usa lo que define el anterior, así que Leaflet y config van primero y dashboard.js al final -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/geo.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/routing.js"></script>
+  <script src="js/layout.js"></script>
+  <script src="js/map.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hardware en 3D · EcoRuta Valledupar</title>
+  <meta name="description" content="Modelo 3D interactivo del contenedor con su sensor ultrasónico, módulo LoRa, batería, panel solar y antena.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&display=swap">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/hardware.css">
+</head>
+<body data-page="hardware">
+  <div id="site-header"></div>
+
+  <!-- página del modelo 3D: el escenario a la izquierda y los controles con la ficha a la derecha -->
+  <main class="hw">
+    <section class="stage-wrap" aria-label="Modelo 3D del contenedor">
+      <div id="stage" class="stage">
+        <!-- aquí Three.js pone el canvas y encima van las etiquetas -->
+        <div id="labels" class="labels"></div>
+        <p id="stage-fallback" class="stage__fallback" hidden>
+          No se pudo iniciar el 3D en este navegador. Pruebe con Chrome, Edge o Firefox actualizados y con la aceleración por hardware activada.
+        </p>
+      </div>
+      <p class="stage__hint">Arrastre para girar · rueda o pellizco para acercar · clic derecho o dos dedos para mover · toque una pieza para ver su ficha.</p>
+    </section>
+
+    <aside class="side" aria-label="Controles y ficha de la pieza">
+      <h1 class="side__title">El equipo dentro de la tapa</h1>
+
+      <div class="controls">
+        <div class="control">
+          <label for="explode">Separar piezas</label>
+          <input id="explode" type="range" min="0" max="100" value="0">
+        </div>
+
+        <div class="control">
+          <label for="fill">Llenado del contenedor</label>
+          <input id="fill" type="range" min="0" max="100" value="45">
+          <output id="fill-out" for="fill">45 %</output>
+        </div>
+
+        <p id="reading" class="reading" aria-live="polite"></p>
+
+        <div class="toggles">
+          <label class="switch" for="t-glass"><input id="t-glass" type="checkbox" checked><span class="switch__track"></span><span>Cuerpo transparente</span></label>
+          <label class="switch" for="t-labels"><input id="t-labels" type="checkbox" checked><span class="switch__track"></span><span>Etiquetas</span></label>
+          <label class="switch" for="t-beam"><input id="t-beam" type="checkbox" checked><span class="switch__track"></span><span>Haz del sensor</span></label>
+          <label class="switch" for="t-rotate"><input id="t-rotate" type="checkbox"><span class="switch__track"></span><span>Giro automático</span></label>
+        </div>
+
+        <button id="btn-camera" type="button" class="btn btn--ghost btn--small">Restablecer cámara</button>
+      </div>
+
+      <article id="part-card" class="part" aria-live="polite">
+        <h2 id="part-name">Seleccione una pieza</h2>
+        <p id="part-text">Toque cualquier parte del modelo o una etiqueta para ver qué hace y qué valores de referencia tiene.</p>
+        <ul id="part-specs" class="part__specs"></ul>
+      </article>
+
+      <section class="flow" aria-label="Recorrido del dato">
+        <h2>Del contenedor a la ruta</h2>
+        <ol id="flow" class="flow__list"></ol>
+      </section>
+    </aside>
+  </main>
+
+  <!-- uso r147 porque es la última que trae OrbitControls como script normal -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.147.0/build/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/controls/OrbitControls.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/geo.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/layout.js"></script>
+  <script src="js/hardware3d.js"></script>
+</body>
+</html>

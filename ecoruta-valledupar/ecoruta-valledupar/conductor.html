@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vista del conductor · EcoRuta Valledupar</title>
+  <meta name="description" content="Pantalla del conductor: próxima parada, indicaciones giro a giro y botón para marcar el contenedor como recolectado.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+  <link rel="stylesheet" href="css/base.css">
+  <!-- los marcadores (.pin) y el camión están en dashboard.css y aquí los reutilizo -->
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/conductor.css">
+</head>
+<body data-page="conductor">
+  <div id="site-header"></div>
+
+  <main class="driver-app">
+    <div class="map-pane">
+      <div id="map" role="application" aria-label="Mapa de la ruta del camión"></div>
+    </div>
+
+    <!-- si todavía no hay ruta calculada, aquí invito a crearla desde el panel -->
+    <section id="empty" class="sheet sheet--empty" hidden>
+      <h1>No hay una ruta activa</h1>
+      <p>La ruta se crea en el panel: active «Solo críticos y crear ruta» y vuelva aquí. Esta página se actualiza sola.</p>
+      <a class="btn" href="dashboard.html">Ir al mapa y rutas</a>
+    </section>
+
+    <section id="driver" class="sheet" hidden>
+      <header class="sheet__top">
+        <div class="field">
+          <label for="truck-select">Camión</label>
+          <select id="truck-select"></select>
+        </div>
+        <div class="progress" aria-live="polite">
+          <span id="progress-text">0 de 0 recolectados</span>
+          <span class="progress__bar"><i id="progress-bar"></i></span>
+        </div>
+      </header>
+
+      <div class="stop">
+        <p id="stop-label" class="stop__label">Próxima parada</p>
+        <h1 id="stop-title" class="stop__title">–</h1>
+        <p id="stop-sub" class="stop__sub"></p>
+        <p id="stop-level" class="stop__level"></p>
+      </div>
+
+      <div class="instruction" aria-live="polite">
+        <p id="instruction-text" class="instruction__text">–</p>
+        <p id="instruction-meta" class="instruction__meta"></p>
+      </div>
+
+      <div class="actions">
+        <button id="btn-drive" type="button" class="btn btn--ghost">Iniciar recorrido de prueba</button>
+        <button id="btn-collect" type="button" class="btn">Recolectado</button>
+      </div>
+      <p class="hint">El recorrido de prueba mueve el camión a una velocidad acelerada sobre la ruta; en un uso real la posición vendría del GPS del camión.</p>
+
+      <h2 class="steps__title">Indicaciones</h2>
+      <ol id="steps" class="steps"></ol>
+    </section>
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/geo.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/routing.js"></script>
+  <script src="js/layout.js"></script>
+  <script src="js/map.js"></script>
+  <script src="js/conductor.js"></script>
+</body>
+</html>

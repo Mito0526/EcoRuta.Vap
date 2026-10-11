@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Documentación del proyecto · EcoRuta Valledupar</title>
+  <meta name="description" content="Problema, alcance, funciones cubiertas, estructura del código y límites del prototipo EcoRuta Valledupar.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&display=swap">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/docs.css">
+</head>
+<body data-page="docs" data-footer="true">
+  <div id="site-header"></div>
+
+  <main class="doc">
+    <header class="doc__head">
+      <h1>Documentación del proyecto</h1>
+      <p>Prototipo de la Fase 3 de Proyecto de Ingeniería II. Esta página explica qué resuelve, qué incluye y qué no.</p>
+    </header>
+
+    <nav class="doc__toc" aria-label="Contenido de la página">
+      <a href="#problema">Problema</a>
+      <a href="#funciona">Cómo funciona</a>
+      <a href="#cubierto">Qué cubre el prototipo</a>
+      <a href="#limites">Límites</a>
+      <a href="#datos">Datos y supuestos</a>
+      <a href="#codigo">Estructura del código</a>
+    </nav>
+
+    <section id="problema" class="doc__section">
+      <h2>El problema</h2>
+      <p>
+        En Valledupar se recicla cerca del 20&nbsp;% de los residuos sólidos. La recolección sigue rutas y horarios
+        fijos: el camión pasa por contenedores casi vacíos mientras otros ya están desbordados. Eso gasta
+        combustible y tiempo, y deja basura en la calle.
+      </p>
+      <p>
+        El proyecto propone medir el llenado de cada contenedor con un sensor y armar la ruta del día solo con los
+        contenedores que ya llegaron al umbral definido (en los documentos del proyecto, 80&nbsp;%).
+      </p>
+    </section>
+
+    <section id="funciona" class="doc__section">
+      <h2>Cómo funciona</h2>
+      <ol class="doc__steps">
+        <li><strong>Medir.</strong> Un sensor ultrasónico bajo la tapa calcula la distancia hasta los residuos.</li>
+        <li><strong>Enviar.</strong> Un módulo con radio LoRa manda el dato a un gateway, sin SIM ni plan de datos por contenedor.</li>
+        <li><strong>Decidir.</strong> La plataforma compara cada nivel con el umbral y separa los contenedores críticos.</li>
+        <li><strong>Rutear.</strong> Con los críticos se calcula una ruta por calles para uno, dos o tres camiones.</li>
+        <li><strong>Recoger.</strong> El conductor sigue la ruta y marca cada contenedor como recolectado; el nivel vuelve a 0&nbsp;%.</li>
+      </ol>
+    </section>
+
+    <section id="cubierto" class="doc__section">
+      <h2>Qué cubre el prototipo</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th scope="col">Función</th><th scope="col">Dónde verla</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Mapa de Valledupar con todos los contenedores</td><td><a href="dashboard.html">Mapa y rutas</a></td></tr>
+            <tr><td>Clic en un contenedor para ver su porcentaje de llenado</td><td><a href="dashboard.html">Mapa y rutas</a></td></tr>
+            <tr><td>Lista lateral con todos los contenedores y su porcentaje</td><td><a href="dashboard.html">Mapa y rutas</a>, pestaña Contenedores</td></tr>
+            <tr><td>Umbral ajustable (80&nbsp;% y 90&nbsp;% a un clic) y filtro de críticos</td><td><a href="dashboard.html">Mapa y rutas</a>, barra superior</td></tr>
+            <tr><td>Ruta automática por calles, hasta con 3 camiones</td><td><a href="dashboard.html">Mapa y rutas</a>, pestaña Rutas</td></tr>
+            <tr><td>Colores según el nivel de llenado</td><td>Marcadores y lista del mapa</td></tr>
+            <tr><td>Sensores simulados que van llenando los contenedores</td><td>Botón «Simular sensores»</td></tr>
+            <tr><td>Ahorro estimado de kilómetros, tiempo, combustible y CO₂</td><td>Pestaña Rutas</td></tr>
+            <tr><td>Hardware del contenedor en 3D, que se puede mover y separar</td><td><a href="hardware.html">Hardware 3D</a></td></tr>
+            <tr><td>Pantalla del conductor con indicaciones giro a giro</td><td><a href="conductor.html">Conductor</a></td></tr>
+            <tr><td>Marcar un contenedor como recolectado</td><td>Ventana del contenedor y vista del conductor</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="limites" class="doc__section">
+      <h2>Límites del prototipo</h2>
+      <ul>
+        <li>No hay sensores reales. Los niveles son simulados y las posiciones son aproximadas por barrio; no son contenedores existentes.</li>
+        <li>Las rutas por calles usan el servicio público de demostración de OSRM. Si no responde, el prototipo calcula rutas estimadas en línea recta (se dibujan punteadas) y lo avisa en pantalla.</li>
+        <li>El ahorro se compara con un solo camión que recoge todos los contenedores. Los consumos y emisiones son supuestos editables, no mediciones.</li>
+        <li>Los valores del hardware (alcance, banda, batería) son de referencia y deben confirmarse con las hojas de datos. En Colombia hay que verificar la normativa de la ANE para la banda LoRa.</li>
+        <li>El estado se guarda en el navegador de cada persona; no hay servidor ni base de datos.</li>
+        <li>La vista del conductor usa un camión de prueba que se mueve acelerado; no lee un GPS real.</li>
+      </ul>
+    </section>
+
+    <section id="datos" class="doc__section">
+      <h2>Datos y supuestos</h2>
+      <p>
+        Hay 53 contenedores repartidos en 10 sectores (Centro, Alfonso López, Cañaguate, Los Mayales, Novalito,
+        Los Músicos, 12 de Octubre, Garupal, Dangond y Villa Clara). Dentro de cada sector se ubican sobre una
+        cuadrícula con pequeñas variaciones, de modo que quedan a entre 150 y 320 metros uno de otro. Los centros de
+        los sectores son aproximados. Los niveles iniciales se generan con una semilla fija, así que el prototipo
+        siempre arranca igual.
+      </p>
+      <p>
+        Los supuestos de ahorro están en <code>js/config.js</code>: 0,45&nbsp;L de combustible por kilómetro,
+        2,68&nbsp;kg de CO₂ por litro y 2&nbsp;minutos de servicio por parada.
+      </p>
+    </section>
+
+    <section id="codigo" class="doc__section">
+      <h2>Estructura del código</h2>
+      <p>Cada página tiene su HTML, su CSS y su JavaScript. Los módulos compartidos se cargan antes que el de la página.</p>
+<pre class="tree" aria-label="Árbol de carpetas del proyecto">ecoruta-valledupar/
+├── index.html            portada con la demostración del umbral
+├── dashboard.html        mapa, lista y rutas
+├── hardware.html         modelo 3D del contenedor
+├── conductor.html        vista del conductor
+├── proyecto.html         esta página
+├── css/
+│   ├── base.css          colores, tipografía, encabezado, botones
+│   ├── home.css  dashboard.css  hardware.css  conductor.css  docs.css
+├── js/
+│   ├── config.js         ajustes: umbral, colores, supuestos, servidor de rutas
+│   ├── geo.js            distancias y formatos
+│   ├── data.js           los 53 contenedores simulados
+│   ├── store.js          estado compartido y localStorage
+│   ├── routing.js        OSRM, agrupación, orden de paradas y ahorro
+│   ├── layout.js         encabezado, pie y avisos
+│   ├── map.js            funciones del mapa con Leaflet
+│   └── home.js  dashboard.js  hardware3d.js  conductor.js
+├── assets/favicon.svg
+└── tests/run-tests.js    pruebas de la lógica con Node</pre>
+      <p>
+        Librerías externas, con versión fija: Leaflet 1.9.4 (mapas), Three.js r147 con OrbitControls (3D) y los mapas
+        de OpenStreetMap. Las rutas por calles las calcula el servicio público de OSRM.
+      </p>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script src="js/config.js"></script>
+  <script src="js/geo.js"></script>
+  <script src="js/layout.js"></script>
+</body>
+</html>
